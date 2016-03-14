@@ -12,6 +12,7 @@ fi
 SEEDS=`curl -L ${DOCKER_ENDPOINT}/v2/keys/cassandra/seeds 2>/dev/null| jq  '.node.value'| sed s/[\"]//g`
 SEEDS=${SEEDS%\\n}
 if [ $SEEDS == "null" ]; then
+    SEEDS="${IP}"
     curl -L -X PUT ${DOCKER_ENDPOINT}/v2/keys/cassandra/seeds -d value="${IP}" 2>/dev/null
 else
     if [[ $seeds != *"${IP}"* ]]; then
