@@ -1,0 +1,15 @@
+[Unit]
+Description=Cassandra
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill cassandra-docker
+ExecStartPre=-/usr/bin/docker rm cassandra-docker
+ExecStartPre=/usr/bin/docker pull netf/cassandra-docker
+ExecStart=/usr/bin/docker run --name cassandra-docker -p 9042:9042  -p 9160:9160 -p 7000:7000 -p 7001:7001 -p 7199:7199 netf/cassandra-docker
+ExecStop=/usr/bin/docker stop cassandra-docker
+
+[X-Fleet]
+Conflicts=cassandra@*.service
