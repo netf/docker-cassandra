@@ -1,7 +1,9 @@
 [Unit]
 Description=Cassandra
-After=docker.service
 Requires=docker.service
+Requires=flanneld.service
+After=docker.service
+After=flanneld.service
 
 [Service]
 TimeoutStartSec=0

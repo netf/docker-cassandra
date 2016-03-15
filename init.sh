@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 IP=`hostname --ip-address`
-DOCKER_ENDPOINT="http://172.17.42.1:2379/"
+DOCKER_ENDPOINT="http://"`ip r s | grep default | awk '{print $3}'`"/"
 
 # Setup Cassandra
 CLUSTER_NAME=`curl -L ${DOCKER_ENDPOINT}/v2/keys/cassandra/cluster_name 2>/dev/null| jq  '.node.value'| sed s/[\"]//g`
@@ -33,4 +33,4 @@ sed -i -e "s/# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"/ 
 
 # Start Cassandra
 echo Starting Cassandra...
-cassandra -f -p /var/run/cassandra.pid
+exec cassandra -f -p /var/run/cassandra.pid
